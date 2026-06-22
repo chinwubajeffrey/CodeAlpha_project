@@ -48,6 +48,18 @@ router.post("/:taskId/comments", async (req, res) => {
         },
       },
     });
+    const io = req.app.get("io");
+    const getTask = await prisma.task.findUnique({
+      where: { id: taskId },
+      include: {
+        board: true,
+      },
+    });
+
+    io.to(getTask.board.projectId).emit("new-comment", {
+      taskId,
+      comment: newComment,
+    });
 
     return res.status(201).json(newComment);
   } catch (error) {

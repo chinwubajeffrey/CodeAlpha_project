@@ -31,6 +31,12 @@ router.post("/:boardId/tasks", async (req, res) => {
       });
     }
 
+    const io = req.app.get("io");
+    const board = await prisma.board.findUnique({
+      where: { id: id },
+    });
+    io.to(board.projectId).emit("task-updated", { id, task: newTask });
+
     return res.status(201).json({ newTask });
   } catch (error) {
     res.status(500).json(`Something Went wrong`);
@@ -54,6 +60,12 @@ router.patch("/:id", async (req, res) => {
         ...(boardId && { boardId }),
       },
     });
+
+    const io = req.app.get("io");
+    const board = await prisma.board.findUnique({
+      where: { id: id },
+    });
+    io.to(board.projectId).emit("task-updated", { id, task: newTask });
 
     return res.status(200).json(updateTask);
   } catch (error) {
