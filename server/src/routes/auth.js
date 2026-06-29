@@ -59,7 +59,7 @@ router.post("/login", async (req, res, next) => {
       { id: findEmail.id, email: findEmail.email },
       process.env.JWT_SECRET,
       {
-        expiresIn: "15m",
+        expiresIn: "7d",
       },
     );
 

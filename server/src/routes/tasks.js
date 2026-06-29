@@ -37,7 +37,7 @@ router.post("/:boardId/tasks", async (req, res) => {
     });
     io.to(board.projectId).emit("task-updated", { id, task: newTask });
 
-    return res.status(201).json({ newTask });
+    return res.status(201).json(newTask);
   } catch (error) {
     res.status(500).json(`Something Went wrong`);
   }

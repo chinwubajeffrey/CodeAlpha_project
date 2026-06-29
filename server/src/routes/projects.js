@@ -130,9 +130,10 @@ router.get("/:id", protect, async (req, res) => {
     if (!findProject) {
       return res.status(404).json({ message: `Project not found` });
     }
-    return res.status(200).json({ findProject });
+    return res.status(200).json(findProject);
   } catch (error) {
     res.status(500).json({ message: `something went wrong` });
+    console.log(error);
   }
 });
 
